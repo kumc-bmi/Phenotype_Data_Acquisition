@@ -1,4 +1,4 @@
 *.ini
-*.sql
 *.zip
 *.log
+venv
