@@ -1,6 +1,6 @@
 /**
-N3C Phenotype 3.3 - OMOP Oracle
-Author: Robert Miller (Tufts), Emily Pfaff (UNC), Kristin Kostka (OHDSI)
+N3C Phenotype 3.2 - OMOP Oracle
+Author: Robert Miller (Tufts), Emily Pfaff (UNC)
 
 HOW TO RUN:
 If you are not using the R or Python exporters, you will need to find and replace @cdmDatabaseSchema and @resultsDatabaseSchema, @cdmDatabaseSchema with your local OMOP schema details. This is the only modification you should make to this script.
@@ -14,10 +14,9 @@ If you have read/write to your cdmDatabaseSchema, you would use the same schema 
 
 To follow the logic used in this code, visit: https://github.com/National-COVID-Cohort-Collaborative/Phenotype_Data_Acquisition/wiki/Latest-Phenotype
 
-SCRIPT RELEASE DATE: By June 2021
+SCRIPT RELEASE DATE: By 14 February 2020
 
 **/
-
 
 
 BEGIN
@@ -171,42 +170,6 @@ INSERT INTO @resultsDatabaseSchema.N3C_PRE_COHORT
 					,723474
 					,757685
 					,723476
-					,586524
-					,586525
-					,586527
-					,586528
-					,586529
-					,715272
-					,723463
-					,723464
-					,723465
-					,723466
-					,723467
-					,723468
-					,723469
-					,723470
-					,723471
-					,723473
-					,723475
-					,723477
-					,723478
-					,723480
-					,36661369
-					,36031238
-					,36031213
-					,36031506
-					,36031197
-					,36032061
-					,36031944
-					,36031969
-					,36031956
-					,36032309
-					,36032174
-					,36032419
-					,36031652
-					,36031453
-					,36032258
-					,36031734
 					)
 
 			   UNION
@@ -254,13 +217,13 @@ AS (SELECT DISTINCT person_id
 			-- The list of ICD-10 codes in the Phenotype Wiki
 			-- This is the list of standard concepts that represent those terms
 			  WHERE concept_id IN (
-					3661405
-					,3661406
-					,3662381
+					756023
+					,756044
+					,756061
 					,756031
 					,37311061
-					,3663281
-					,3661408
+					,756081
+					,37310285
 					,756039
 					,320651
 					)
@@ -294,13 +257,13 @@ AS (SELECT DISTINCT person_id
 			-- This is the list of standard concepts that represent those terms
 			    WHERE concept_id IN (
 					37311061
-					,3661405
+					,756023
 					,756031
 					,756039
-					,3661406
-					,3662381
-					,3663281
-					,3661408
+					,756044
+					,756061
+					,756081
+					,37310285
 					)
 
 			   UNION
@@ -310,13 +273,13 @@ AS (SELECT DISTINCT person_id
 			JOIN @cdmDatabaseSchema.CONCEPT_ANCESTOR ca ON c.concept_id = ca.descendant_concept_id
 				-- Here we pull the descendants (aka terms that are more specific than the concepts selected above)
 				AND ca.ancestor_concept_id IN (
-					3661406
-					,3661408
+					756044
+					,37310285
 					,37310283
-					,3662381
-					,3663281
+					,756061
+					,756081
 					,37310287
-					,3661405
+					,756023
 					,756031
 					,37310286
 					,37311061
@@ -755,46 +718,6 @@ AS (SELECT DISTINCT person_id
 					,36661374
 					,36661370
 					,36661371
-					,723479
-					,723474
-					,757685
-					,723476
-					,586524
-					,586525
-					,586527
-					,586528
-					,586529
-					,715272
-					,723463
-					,723464
-					,723465
-					,723466
-					,723467
-					,723468
-					,723469
-					,723470
-					,723471
-					,723473
-					,723475
-					,723477
-					,723478
-					,723480
-					,36661369
-					,36031238
-					,36031213
-					,36031506
-					,36031197
-					,36032061
-					,36031944
-					,36031969
-					,36031956
-					,36032309
-					,36032174
-					,36032419
-					,36031652
-					,36031453
-					,36032258
-					,36031734
 					)
 
 			   UNION
@@ -858,7 +781,7 @@ AS (SELECT covid_cohort.person_id
 	,inc_dx_weak
 	,inc_lab_any
 	,inc_lab_pos
-	,'3.3' AS phenotype_version
+	,'3.2' AS phenotype_version
 	,CASE
 		WHEN floor(months_between(SYSDATE, d.birth_datetime)/12) BETWEEN 0
 				AND 4
