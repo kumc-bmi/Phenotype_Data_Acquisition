@@ -1,6 +1,6 @@
 /**
-N3C Phenotype 3.2 - Postgres
-Author: Robert Miller (Tufts), Emily Pfaff (UNC)
+N3C Phenotype 3.3 - Postgres
+Author: Robert Miller (Tufts), Emily Pfaff (UNC), Kristin Kostka (OHDSI)
 
 HOW TO RUN:
 If you are not using the R or Python exporters, you will need to find and replace @cdmDatabaseSchema and @resultsDatabaseSchema, @cdmDatabaseSchema with your local OMOP schema details. This is the only modification you should make to this script.
@@ -14,9 +14,10 @@ If you have read/write to your cdmDatabaseSchema, you would use the same schema 
 
 To follow the logic used in this code, visit: https://github.com/National-COVID-Cohort-Collaborative/Phenotype_Data_Acquisition/wiki/Latest-Phenotype
 
-SCRIPT RELEASE DATE: By 14 February 2020
+SCRIPT RELEASE DATE: By June 2021
 
 **/
+
 
 
 CREATE TABLE IF NOT EXISTS @resultsDatabaseSchema.N3C_PRE_COHORT  (person_id INT NOT NULL
@@ -127,6 +128,42 @@ AS (
 					,723474
 					,757685
 					,723476
+					,586524
+					,586525
+					,586527
+					,586528
+					,586529
+					,715272
+					,723463
+					,723464
+					,723465
+					,723466
+					,723467
+					,723468
+					,723469
+					,723470
+					,723471
+					,723473
+					,723475
+					,723477
+					,723478
+					,723480
+					,36661369
+					,36031238
+					,36031213
+					,36031506
+					,36031197
+					,36032061
+					,36031944
+					,36031969
+					,36031956
+					,36032309
+					,36032174
+					,36032419
+					,36031652
+					,36031453
+					,36032258
+					,36031734
 					)
 
 			UNION
@@ -176,13 +213,13 @@ AS (
 			-- The list of ICD-10 codes in the Phenotype Wiki
 			-- This is the list of standard concepts that represent those terms
 			WHERE concept_id IN (
-					756023
-					,756044
-					,756061
+					3661405
+					,3661406
+					,3662381
 					,756031
 					,37311061
-					,756081
-					,37310285
+					,3663281
+					,3661408
 					,756039
 					,320651
 					)
@@ -218,13 +255,13 @@ AS (
 			-- This is the list of standard concepts that represent those terms
 			WHERE concept_id IN (
 					37311061
-					,756023
+					,3661405
 					,756031
 					,756039
-					,756044
-					,756061
-					,756081
-					,37310285
+					,3661406
+					,3662381
+					,3663281
+					,3661408
 					)
 
 			UNION
@@ -234,13 +271,13 @@ AS (
 			JOIN @cdmDatabaseSchema.CONCEPT_ANCESTOR ca ON c.concept_id = ca.descendant_concept_id
 				-- Here we pull the descendants (aka terms that are more specific than the concepts selected above)
 				AND ca.ancestor_concept_id IN (
-					756044
-					,37310285
+					3661406
+					,3661408
 					,37310283
-					,756061
-					,756081
+					,3662381
+					,3663281
 					,37310287
-					,756023
+					,3661405
 					,756031
 					,37310286
 					,37311061
@@ -691,6 +728,46 @@ AS (
 					,36661374
 					,36661370
 					,36661371
+					,723479
+					,723474
+					,757685
+					,723476
+					,586524
+					,586525
+					,586527
+					,586528
+					,586529
+					,715272
+					,723463
+					,723464
+					,723465
+					,723466
+					,723467
+					,723468
+					,723469
+					,723470
+					,723471
+					,723473
+					,723475
+					,723477
+					,723478
+					,723480
+					,36661369
+					,36031238
+					,36031213
+					,36031506
+					,36031197
+					,36032061
+					,36031944
+					,36031969
+					,36031956
+					,36032309
+					,36032174
+					,36032419
+					,36031652
+					,36031453
+					,36032258
+					,36031734
 					)
 
 			UNION
@@ -758,7 +835,7 @@ SELECT DISTINCT c.person_id
 	,inc_dx_weak
 	,inc_lab_any
 	,inc_lab_pos
-	,'3.2' AS phenotype_version
+	,'3.3' AS phenotype_version
 	,CASE
 		WHEN DATE_PART('year', CURRENT_DATE) - DATE_PART('year', d.birth_datetime) BETWEEN 0
 				AND 4
@@ -879,49 +956,45 @@ WHERE CONTROL_PERSON_ID IN (
 		FROM @resultsDatabaseSchema.N3C_CASE_COHORT
 		);
 
--- Remove cases and controls from the mapping table if those people are no longer in the person table (due to merges or other reasons)
+-- Postgres NOT IN () is extremely show. Change to NOT EXISTS and use where A = B 
 DELETE
-FROM @resultsDatabaseSchema.N3C_CONTROL_MAP
-WHERE CASE_person_id NOT IN (
-		SELECT person_id
-		FROM @cdmDatabaseSchema.person
+FROM @resultsDatabaseSchema.N3C_CONTROL_MAP n
+WHERE NOT EXISTS (
+		SELECT 1 FROM @cdmDatabaseSchema.person p where p.person_id = n.case_person_id 
 		);
 
+-- Postgres NOT IN () is extremely show. Change to NOT EXISTS and use where A = B 
 DELETE
-FROM @resultsDatabaseSchema.N3C_CONTROL_MAP
-WHERE CONTROL_person_id NOT IN (
-		SELECT person_id
-		FROM @cdmDatabaseSchema.person
+FROM @resultsDatabaseSchema.N3C_CONTROL_MAP n
+WHERE NOT EXISTS (
+		SELECT 1 FROM @cdmDatabaseSchema.person p where p.person_id = n.control_person_id 
 		);
 
--- Remove cases who no longer meet the phenotype definition
+-- Postgres NOT IN () is extremely show. Change to NOT EXISTS and use where A = B 
 DELETE
-FROM @resultsDatabaseSchema.N3C_CONTROL_MAP
-WHERE CASE_person_id NOT IN (
-		SELECT person_id
-		FROM @resultsDatabaseSchema.N3C_CASE_COHORT
-		WHERE person_id IS NOT NULL
+FROM @resultsDatabaseSchema.N3C_CONTROL_MAP NCM
+WHERE NOT EXISTS (
+		SELECT 1 FROM @resultsDatabaseSchema.N3C_CASE_COHORT NCC WHERE NCC.person_id = NCM.case_person_id and NCC.person_id IS NOT NULL
 		);
-
 
 INSERT INTO @resultsDatabaseSchema.N3C_CONTROL_MAP
 SELECT
-		person_id, 1 as buddy_num, cast(null as int)
-		FROM @resultsDatabaseSchema.n3c_case_cohort
-		WHERE person_id NOT IN (
-			SELECT case_person_id
-			FROM @resultsDatabaseSchema.N3C_CONTROL_MAP
-			WHERE buddy_num = 1
+		person_id, 1 as buddy_num, cast(NULL as int)
+		FROM @resultsDatabaseSchema.n3c_case_cohort ncc1
+		-- Postgres NOT IN () is extremely show. Change to NOT EXISTS and use where A = B 
+		WHERE NOT EXISTS( 
+			SELECT 1 FROM @resultsDatabaseSchema.N3C_CONTROL_MAP ncm1 
+			WHERE ncm1.case_person_id = ncc1.person_id and ncm1.buddy_num = 1
 			)
-
+		
 		UNION
-
-		SELECT person_id, 2 as buddy_num, cast(null as int)
-		FROM @resultsDatabaseSchema.n3c_case_cohort
-		WHERE person_id NOT IN (
-			SELECT case_person_id
-			FROM @resultsDatabaseSchema.N3C_CONTROL_MAP
-			WHERE buddy_num = 2
+		
+		SELECT person_id, 2 as buddy_num, cast( NULL as int)
+		FROM @resultsDatabaseSchema.n3c_case_cohort ncc2
+		-- Postgres NOT IN () is extremely show. Change to NOT EXISTS and use where A = B 
+		WHERE NOT EXISTS( 
+			SELECT 1 FROM @resultsDatabaseSchema.N3C_CONTROL_MAP ncm2 
+			WHERE ncm2.case_person_id = ncc2.person_id and ncm2.buddy_num = 2
 			)
 ;
 
