@@ -151,7 +151,6 @@ replace(
 replace(
 replace(
 replace(
-replace(
 replace(sql_str,
      'TOKEN_ENCRYPTION_KEY,'    ,'')
     ,' PROVIDERID,'               ,' RAWTOHEX(standard_HASH("***encrypting_password"||PROVIDERID,"SHA1")) PROVIDERID,')
@@ -165,7 +164,6 @@ replace(sql_str,
     ,'RAW_PAYER_ID_SECONDARY'   ,'RAWTOHEX(standard_HASH("***encrypting_password"||RAW_PAYER_ID_SECONDARY,"SHA1")) RAW_PAYER_ID_SECONDARY')
     ,'ADDRESS_USE,'              ,'RAWTOHEX(standard_HASH("***encrypting_password"||ADDRESS_USE,"SHA1")) ADDRESS_USE,')
     ,'ADDRESS_PREFERRED,'        ,'RAWTOHEX(standard_HASH("***encrypting_password"||ADDRESS_PREFERRED,"SHA1")) ADDRESS_PREFERRED,')
-    ,'ADDRESS_CITY,'             ,'RAWTOHEX(standard_HASH("***encrypting_password"||ADDRESS_CITY,"SHA1")) ADDRESS_CITY,')
     ,'ENCOUNTERID,'              ,'RAWTOHEX(standard_HASH("***encrypting_password"||ENCOUNTERID,"SHA1")) ENCOUNTERID,')
     ,'VX_PROVIDERID,'            ,'RAWTOHEX(standard_HASH("***encrypting_password"||VX_PROVIDERID,"SHA1")) VX_PROVIDERID,')
     ,'MEDADMIN_PROVIDERID,'      ,'RAWTOHEX(standard_HASH("***encrypting_password"||MEDADMIN_PROVIDERID,"SHA1")) MEDADMIN_PROVIDERID,')
