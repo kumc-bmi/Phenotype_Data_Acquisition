@@ -2,3 +2,5 @@
 *.sql
 *.zip
 *.log
+venv
+config.ini
