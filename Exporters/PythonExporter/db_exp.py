@@ -12,7 +12,8 @@ def postgres_connect(config):
     database = config['postgres']['database']
     user = config['postgres']['user']
     pwd = config['postgres']['pwd']
-    constr = 'user='+user+' host='+host+' dbname='+database+' port='+port+' password='+ pwd
+    constr = 'user='+user+' host='+host+' dbname='+database+' port='+port+' password='+ pwd + ' sslmode=require'
+    print(constr)
     conn = psycopg2.connect(constr)
     return(conn)
 
