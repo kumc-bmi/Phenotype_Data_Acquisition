@@ -554,7 +554,7 @@ INSERT INTO @resultsDatabaseSchema.N3C_PRE_CONTROLS (patid, maxenc, minenc, days
 		npc.patid,
 		max(e.ADMIT_DATE) as maxenc,
 		min(e.ADMIT_DATE) as minenc,
-		(max(e.ADMIT_DATE)-min(e.ADMIT_DATE)) as daysonhand,
+		extract( days from (max(e.ADMIT_DATE)-min(e.ADMIT_DATE)))::integer as daysonhand,
 		RANDOM() AS randnum -- random number
 	from
 		@resultsDatabaseSchema.n3c_pre_cohort npc 
@@ -566,7 +566,7 @@ INSERT INTO @resultsDatabaseSchema.N3C_PRE_CONTROLS (patid, maxenc, minenc, days
 	group by
 		npc.patid
 	having
-		(max(e.ADMIT_DATE)-min(e.ADMIT_DATE)) >= 10;
+		extract( days from (max(e.ADMIT_DATE)-min(e.ADMIT_DATE)))::integer >= 10;
 		
 -- create pre-map table with random nums
 INSERT INTO @resultsDatabaseSchema.N3C_PRE_MAP (patid, pt_age, sex, race, hispanic, buddy_num, randnum)
