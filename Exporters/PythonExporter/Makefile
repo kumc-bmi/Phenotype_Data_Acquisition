@@ -7,8 +7,8 @@ run: venv
 	--phenotype  ../../PhenotypeScripts/N3C_phenotype_pcornet_postgres.sql \
 	--extract ../../ExtractScripts/N3C_extract_pcornet6_postgres.sql \
 	--output_dir ./output  --zip \
-	--debug \
-	--sftp
+	--debug
+	#--sftp
 
 venv:
 	# "creating python virtual env"
