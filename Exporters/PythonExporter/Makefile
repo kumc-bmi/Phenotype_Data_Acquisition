@@ -1,12 +1,12 @@
 run: venv
 	. venv/bin/activate && \
 	which python && \
-	mkdir -p ~/n3c/output/DATAFILES && \
+	mkdir -p ./output/DATAFILES && \
 	cp /var/lib/jenkins/.env/n3c/config.ini config.ini && \
 	python db_exp.py --config config.ini --database postgres  \
 	--phenotype  ../../PhenotypeScripts/N3C_phenotype_pcornet_postgres.sql \
 	--extract ../../ExtractScripts/N3C_extract_pcornet6_postgres.sql \
-	--output_dir ~/n3c/output  --zip \
+	--output_dir ./output  --zip \
 	--debug
 	#--sftp
 
