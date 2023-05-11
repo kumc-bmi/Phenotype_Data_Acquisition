@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS @resultsDatabaseSchema.N3C_PRE_COHORT (
 		hispanic           VARCHAR(20),
 		race                VARCHAR(20)
 	);
-	
+-- Following help KU to speed up join
+ALTER TABLE @resultsDatabaseSchema.n3c_pre_cohort ALTER COLUMN patid TYPE bpchar(16) USING patid::bpchar;
 	
 --Create table to hold all cases
 CREATE TABLE IF NOT EXISTS @resultsDatabaseSchema.N3C_CASE_COHORT (
