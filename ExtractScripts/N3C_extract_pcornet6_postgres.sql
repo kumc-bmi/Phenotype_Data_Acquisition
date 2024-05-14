@@ -447,9 +447,6 @@ FROM @cdmDatabaseSchema.MED_ADMIN JOIN @resultsDatabaseSchema.N3C_COHORT ON MED_
   WHERE MEDADMIN_START_DATE >= '2018-01-01' ;
 
 --OBS_CLIN
-CREATE INDEX obs_clin_obsclin_start_date_idx ON @cdmDatabaseSchema.obs_clin (obsclin_start_date);
-CREATE INDEX obs_clin_patid_idx ON @cdmDatabaseSchema.obs_clin (patid);
-
 --OUTPUT_FILE: OBS_CLIN.csv
 SELECT OBSCLINID,
    OBS_CLIN.PATID,
@@ -479,9 +476,6 @@ FROM @cdmDatabaseSchema.OBS_CLIN JOIN @resultsDatabaseSchema.N3C_COHORT ON OBS_C
   WHERE OBSCLIN_START_DATE >= '2018-01-01' ;
 
 --OBS_GEN
-CREATE INDEX if not exists obs_gen_obsgen_start_date_idx ON @cdmDatabaseSchema.obs_gen (obsgen_start_date);
-CREATE INDEX if not exists obs_gen_obsgen_patid_idx ON @cdmDatabaseSchema.obs_gen (patid);
-
 --OUTPUT_FILE: OBS_GEN.csv
 SELECT OBSGENID,
    OBS_GEN.PATID,
