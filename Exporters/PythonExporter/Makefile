@@ -1,13 +1,14 @@
 d=$(date "+_%Y%m%d")
 
-send_to_n3c: run
+send_to_n3c: covid_obsgen_n3c_export 
 	# "sending to n3c"
 	. venv/bin/activate && \
 	./send_to_n3c.sh
 
 covid_obsgen_n3c_export:run
 	psql -v "ON_ERROR_STOP=1" -f covid_obsgen_n3c_export.sql
-	mv OBS_GEN.csv KUMC_pcornet${d}/
+	mv OBS_GEN.csv output/
+	mv output KUMC_pcornet${d}
 	zip -r  KUMC_pcornet${d}.zip  KUMC_pcornet${d}
 
 run: venv
