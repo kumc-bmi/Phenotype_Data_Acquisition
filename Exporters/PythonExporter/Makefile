@@ -20,6 +20,7 @@ run: venv
 		--extract ../../ExtractScripts/N3C_extract_pcornet6_postgres.sql \
 		--output_dir ./output \
 		--debug
+	touch $@
 
 venv:
 	# "creating python virtual env"
@@ -31,4 +32,4 @@ venv:
 	which pip && which python && python --version
 
 clean: 
-	rm -rf venv
+	rm -rf venv run covid_obsgen_n3c_export send_to_n3c
