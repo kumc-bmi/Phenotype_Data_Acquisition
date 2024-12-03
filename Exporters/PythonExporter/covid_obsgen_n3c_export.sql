@@ -29,4 +29,5 @@ FROM cdm60_limited_dataset_n3c.OBS_GEN JOIN cdm60_limited_dataset_n3c.N3C_COHORT
  WHERE OBSGEN_START_DATE >= '2018-01-01'
 ;
 
-\copy cdm60_limited_dataset_n3c.OBS_GEN_n3c to 'OBS_GEN.csv' csv;
+-- export to csv with header with always quotes and sep by pipe
+\copy cdm60_limited_dataset_n3c.OBS_GEN_n3c to 'OBS_GEN.csv' with csv header quote as '"' delimiter '|';
