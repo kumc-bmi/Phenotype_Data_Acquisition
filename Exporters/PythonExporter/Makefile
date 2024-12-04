@@ -1,4 +1,4 @@
-d=$(date "+_%Y%m%d")
+d=$(shell date "+_%Y%m%d")
 
 send_to_n3c: covid_obsgen_n3c_export 
 	# "sending to n3c"
