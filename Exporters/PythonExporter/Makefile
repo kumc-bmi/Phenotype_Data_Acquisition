@@ -7,7 +7,7 @@ send_to_n3c: covid_obsgen_n3c_export
 
 covid_obsgen_n3c_export:run
 	psql -v "ON_ERROR_STOP=1" -f covid_obsgen_n3c_export.sql
-	mv OBS_GEN.csv output/
+	mv OBS_GEN.csv output/DATAFILES
 	mv output KUMC_pcornet${d}
 	zip -r  KUMC_pcornet${d}.zip  KUMC_pcornet${d}
 
